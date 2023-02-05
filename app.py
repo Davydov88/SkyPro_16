@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 import data_json
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -21,7 +21,7 @@ class User(db.Model):
 
 
     def to_dict(self):
-        return {col.name: getattr(self, col.name) for col in self.__table__columns}
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
 
 
 class Order(db.Model):
@@ -38,7 +38,7 @@ class Order(db.Model):
 
 
     def to_dict(self):
-        return {col.name: getattr(self, col.name) for col in self.__table__columns}
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
 
 
 class Offer(db.Model):
@@ -49,7 +49,7 @@ class Offer(db.Model):
 
 
     def to_dict(self):
-        return {col.name: getattr(self, col.name) for col in self.__table__columns}
+        return {col.name: getattr(self, col.name) for col in self.__table__.columns}
 
 
 with app.app_context():
@@ -61,8 +61,8 @@ with app.app_context():
 
 
     for order_data in data_json.orders:
-        order_data['start_date'] = datetime.strptime(order_data['start_date'], '%m/%d/%y').date()
-        order_data['end_date'] = datetime.strptime(order_data['end_date'], '%m/%d/%y').date()
+        order_data['start_date'] = datetime.strptime(order_data['start_date'], '%m/%d/%Y').date()
+        order_data['end_date'] = datetime.strptime(order_data['end_date'], '%m/%d/%Y').date()
         db.session.add(Order(**order_data))
         db.session.commit()
 
