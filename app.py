@@ -44,7 +44,7 @@ class Order(db.Model):
 class Offer(db.Model):
     __tablename__ = 'offer'
     id = db.Column(db.Integer, primary_key=True)
-    orderr_id = db.Column(db.Integer, db.ForeignKey('order.id'))
+    order_id = db.Column(db.Integer, db.ForeignKey('order.id'))
     executor_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 
@@ -109,7 +109,7 @@ def user(uid: int):
 @app.route('/orders', methods=['GET', 'POST'])
 def orders():
     if request.method == 'GET':
-        order = Order.query.all()
+        orders = Order.query.all()
         res = []
         for order in orders:
             order_dict = order.to_dict()
